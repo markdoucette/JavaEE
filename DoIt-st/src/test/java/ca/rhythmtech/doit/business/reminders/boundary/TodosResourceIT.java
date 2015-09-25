@@ -4,9 +4,8 @@ import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import javax.json.*;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -55,5 +54,14 @@ public class TodosResourceIT {
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
         assertThat(deleteResponse.getStatus(), is(204));
+    }
+
+    @Test
+    public void saveTodo() {
+        JsonObjectBuilder todoBuilder = Json.createObjectBuilder();
+        JsonObject todoToSave = todoBuilder.add("caption", "Implement some RESTsizzle")
+                .add("priority", 42).build();
+        Response postResponse = this.provider.target().request().post(Entity.json(todoToSave));
+        assertThat(postResponse.getStatus(), is(204));
     }
 }
