@@ -4,7 +4,13 @@ import ca.rhythmtech.doit.business.reminders.entity.ToDo;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +26,7 @@ public class TodosResource {
      * Inject the TodoManager
      */
     @Inject
-    TodoManager manager;
+    ToDoManager manager;
 
     /**
      * Find a specific ToDo by it's id
@@ -28,11 +34,10 @@ public class TodosResource {
      * @param id The id of the ToDo to find
      * @return The ToDo matching the requested id
      */
-    @GET
-    @Produces("application/json")
     @Path("{id}")
-    public ToDo find(@PathParam("id") int id) {
-        return manager.findById(id);
+    @Produces(MediaType.APPLICATION_JSON)
+    public TodoResource findTodoById(@PathParam("id") long id) {
+        return new TodoResource(id, manager);
     }
 
     /**
@@ -40,9 +45,9 @@ public class TodosResource {
      * @return List of all ToDo's
      */
     @GET
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<ToDo> all() {
-        return manager.findAll();
+        return manager.all();
     }
 
     /**
@@ -50,18 +55,13 @@ public class TodosResource {
      * @param toDo the ToDo to be saved
      */
     @POST
-    public void save(ToDo toDo) {
-        manager.save(toDo);
+    public Response save(ToDo todo, @Context UriInfo info) {
+        ToDo savedTodo = manager.save(todo);
+        long todoId = savedTodo.getId();
+        URI uri = info.getAbsolutePathBuilder().path("/" + todoId).build();
+        return Response.created(uri).build();
     }
 
-    /**
-     * Delete a ToDo by id
-     * @param id The id of the ToDo to delete
-     */
-    @DELETE
-    @Path("{id}")
-    public void delete(@PathParam("id") int id) {
-        manager.delete(id);
-    }
+
 
 }
