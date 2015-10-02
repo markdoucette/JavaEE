@@ -47,6 +47,20 @@ public class TodosResourceIT {
     }
 
     @Test
+    public void saveNegative() {
+        Random randgen = new Random();
+        JsonObjectBuilder todoBuilder = Json.createObjectBuilder();
+        JsonObject todo = todoBuilder
+                .add("description", "A great new Todo")
+                .add("priority", randgen.nextInt(100))
+                .build();
+        Response response = this.provider.target().request().post(Entity.json(todo));
+        assertThat(response.getStatus(), is(400));
+        // print out all headers in response
+        response.getHeaders().entrySet().forEach(System.out::println);
+    }
+
+    @Test
     public void findById() {
         Response response = this.provider.target().path("3")
                 .request(MediaType.APPLICATION_JSON).get();

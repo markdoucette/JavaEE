@@ -1,6 +1,8 @@
 package ca.rhythmtech.doit.business.reminders.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,7 +20,11 @@ public class ToDo {
     @Id
     @GeneratedValue
     private long id;
+
+    @NotNull
+    @Size(min = 1, max = 256) // restrain the caption input
     private String caption;
+
     private String description;
     private int priority;
     private boolean done;

@@ -5,6 +5,7 @@ import ca.rhythmtech.doit.business.reminders.entity.ToDo;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -55,7 +56,7 @@ public class TodosResource {
      * @param toDo the ToDo to be saved
      */
     @POST
-    public Response save(ToDo todo, @Context UriInfo info) {
+    public Response save(@Valid ToDo todo, @Context UriInfo info) {
         ToDo savedTodo = manager.save(todo);
         long todoId = savedTodo.getId();
         URI uri = info.getAbsolutePathBuilder().path("/" + todoId).build();
