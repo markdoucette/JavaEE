@@ -4,17 +4,17 @@ import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.Random;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Test the TodosResource class
@@ -58,6 +58,7 @@ public class TodosResourceIT {
         assertThat(response.getStatus(), is(400));
         // print out all headers in response
         response.getHeaders().entrySet().forEach(System.out::println);
+        System.out.println();
     }
 
     @Test
