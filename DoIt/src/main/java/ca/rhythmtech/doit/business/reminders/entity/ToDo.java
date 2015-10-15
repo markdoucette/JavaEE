@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDate;
 
 /**
  * Representation of a ToDo for our application
@@ -27,18 +28,21 @@ public class ToDo {
 
     private String description;
     private int priority;
+    private LocalDate dueDate;
     private boolean done;
 
     @Version // enable optimistic locking
     private long version;
 
     public ToDo() {
+        this.dueDate = LocalDate.ofYearDay(2015, 100);
     }
 
     public ToDo(String caption, String description, int priority) {
         this.caption = caption;
         this.description = description;
         this.priority = priority;
+        this.dueDate = LocalDate.ofYearDay(2015, 100);
     }
 
     public long getId() {
